@@ -7,59 +7,52 @@ use Illuminate\Http\Request;
 
 class EmpleadosController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $empleados = Empleados::all();
+        return view('empleados.index', compact('empleados'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('empleados.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre' => 'required',
+            // Agrega aquí más validaciones según los atributos de tu empleado
+        ]);
+        var_dump($request->only('nombre', 'apellidoP', 'apeliidoM', 'puesto', 'departamento', 'fecha_nacimiento', 'apellido_paterno'));         
+        Empleados::create($request->only('nombre', 'apellidoP', 'apellidoM', 'puesto', 'departamento', 'fecha_nacimiento'));
+        return redirect()->route('empleados.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Empleados $empleados)
+    public function show(Empleados $empleado) // Cambia $empleados a $empleado
     {
-        //
+        return view('empleados.show', compact('empleado'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Empleados $empleados)
+    public function edit(Empleados $empleado) // Cambia $empleados a $empleado
     {
-        //
+        return view('empleados.edit', compact('empleado'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Empleados $empleados)
+    public function update(Request $request, Empleados $empleado) // Cambia $empleados a $empleado
     {
-        //
+        $request->validate([
+            'nombre' => 'required',
+            // Agrega aquí más validaciones según los atributos de tu empleado
+        ]);
+
+        $empleado->update($request->all());
+        return redirect()->route('empleados.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Empleados $empleados)
+    public function destroy(Empleados $empleado) // Cambia $empleados a $empleado
     {
-        //
+        $empleado->delete();
+        return redirect()->route('empleados.index');
     }
 }
