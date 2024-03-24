@@ -19,3 +19,8 @@ use App\Http\Controllers\EmpleadosController;
 });*/
 
 Route::resource('empleados', EmpleadosController::class);
+
+
+Route::get('/login', function () {
+    return view('login.index');
+})->name('login');
