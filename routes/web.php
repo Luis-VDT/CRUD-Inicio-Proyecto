@@ -1,7 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\EmpleadosController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,9 +21,15 @@ use App\Http\Controllers\EmpleadosController;
     return view('welcome');
 });*/
 
-Route::resource('empleados', EmpleadosController::class);
+Route::resource('empleados', EmpleadosController::class)->middleware('auth');
+Route::view('/', 'login.index')->name('login')->middleware('guest');
+//Route::view('register.blade.php', 'login.register');
+Route::post('login', [LoginController::class, 'login']);
+Route::post('logout', [LoginController::class, 'logout']);
+
+//Route::post('register', [LoginController::class, 'register']);
 
 
-Route::get('/login', function () {
-    return view('login.index');
-})->name('login');
+
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'register']);
