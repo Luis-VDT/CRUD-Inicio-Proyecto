@@ -20,12 +20,21 @@ class EmpleadosController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nombre' => 'required',
-            // Agrega aquí más validaciones según los atributos de tu empleado
-        ]);
-        var_dump($request->only('nombre', 'apellidoP', 'apeliidoM', 'puesto', 'departamento', 'fecha_nacimiento', 'apellido_paterno'));         
+        try {
+            $request->validate([
+                'nombre' => 'required|string|max:255',
+                'apellidoP' => 'required|string|max:255',
+                'apellidoM' => 'required|string|max:255',
+                'puesto' => 'required|string|max:255',
+                'departamento' => 'required|string|max:255',
+                'fecha_nacimiento' => 'required|date',
+            ]);
+        } catch (ValidationException $e) {
+            return redirect()->back()->withErrors($e->errors())->withInput();
+        }
+
         Empleados::create($request->only('nombre', 'apellidoP', 'apellidoM', 'puesto', 'departamento', 'fecha_nacimiento'));
+
         return redirect()->route('empleados.index');
     }
 
@@ -39,14 +48,23 @@ class EmpleadosController extends Controller
         return view('empleados.edit', compact('empleado'));
     }
 
-    public function update(Request $request, Empleados $empleado) // Cambia $empleados a $empleado
+    public function update(Request $request, Empleados $empleado)
     {
-        $request->validate([
-            'nombre' => 'required',
-            // Agrega aquí más validaciones según los atributos de tu empleado
-        ]);
+        try {
+            $request->validate([
+                'nombre' => 'required|string|max:255',
+                'apellidoP' => 'required|string|max:255',
+                'apellidoM' => 'required|string|max:255',
+                'puesto' => 'required|string|max:255',
+                'departamento' => 'required|string|max:255',
+                'fecha_nacimiento' => 'required|date',
+            ]);
+        } catch (ValidationException $e) {
+            return redirect()->back()->withErrors($e->errors())->withInput();
+        }
 
         $empleado->update($request->all());
+
         return redirect()->route('empleados.index');
     }
 
