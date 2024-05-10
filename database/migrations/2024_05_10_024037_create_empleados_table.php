@@ -19,8 +19,14 @@ return new class extends Migration
             $table->string('puesto');
             $table->string('departamento');
             $table->date('fecha_nacimiento');
+            
+            //clave foranea para la relacion con proyectos
+            $table->unsignedBigInteger('proyecto_id')->nullable();
+            $table->foreign('proyecto_id')->references('id')->on('proyectos')->onDelete('set null');
+        
             $table->timestamps();
         });
+        
     }
 
     /**
