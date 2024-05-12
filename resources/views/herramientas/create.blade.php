@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Crear nuevo proyecto</title>
+    <title>Crear nueva herramienta</title>
     <!-- Custom fonts for this template -->
     <link href="{{ asset('resources/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -15,19 +15,14 @@
 </head>
 <body class="bg-gradient-primary">
     @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-    @if (session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
-    @endif
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
     <div class="container">
         <div class="card o-hidden border-0 shadow-lg my-5">
             <div class="card-body p-0">
@@ -37,9 +32,9 @@
                     <div class="col-lg-7">
                         <div class="p-5">
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Crear nuevo proyecto</h1>
+                                <h1 class="h4 text-gray-900 mb-4">Crear nueva herramienta</h1>
                             </div>
-                            <form method="POST" action="{{ route('proyectos.store') }}">
+                            <form method="POST" action="{{ route('herramientas.store') }}">
                                 @csrf
                                 <div class="form-group">
                                     <label for="nombre">Nombre</label>
@@ -50,24 +45,12 @@
                                     <textarea class="form-control" id="descripcion" name="descripcion"></textarea>
                                 </div>
                                 <div class="form-group">
-                                    <label for="empleados">Empleados</label>
-                                    <select multiple class="form-control" id="empleados" name="empleados[]">
-                                        @foreach ($empleados as $empleado)
-                                            <option value="{{ $empleado->id }}">{{ $empleado->nombre }}</option>
-                                        @endforeach
-                                    </select>
-                                    <small id="empleadosHelp" class="form-text text-muted">Para seleccionar varios empleados, mantén presionada la tecla Ctrl o Shift mientras haces clic.</small>
-                                </div>
-                                <div class="form-group">
-                                    <label for="herramientas">Herramientas</label>
-                                    <select multiple class="form-control" id="herramientas" name="herramientas[]">
-                                        @foreach ($herramientas as $herramienta)
-                                            <option value="{{ $herramienta->id }}">{{ $herramienta->nombre }}</option>
-                                        @endforeach
-                                    </select>
-                                    <small id="empleadosHelp" class="form-text text-muted">Para seleccionar varias herramientas, mantén presionada la tecla Ctrl o Shift mientras haces clic.</small>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Crear Proyecto</button>
+                                    <label for="cantidadDisponible">Cantidad Disponible</label>
+                                    <input type="number" class="form-control" id="cantidadDisponible" name="cantidadDisponible" required>
+                                    </select>                                    
+                                </div>                                
+
+                                <button type="submit" class="btn btn-primary">Crear Herramienta</button>
                             </form>
                             <hr>                            
                         </div>

@@ -10,6 +10,8 @@ class Herramienta extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['nombre', 'descripcion', 'cantidadDisponible'];
+
     public function proyectos()
     {
         return $this->belongsToMany(Proyecto::class, 'herramienta_proyecto')

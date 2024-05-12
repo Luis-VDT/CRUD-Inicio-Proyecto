@@ -23,7 +23,7 @@ class HerramientaFactory extends Factory
     {
         return [
             'nombre' => $this->faker->word,
-            'cantidadDisponible' => $this->faker->numberBetween(1, 100),
+            'cantidadDisponible' => $this->faker->numberBetween(0, 5),
             'descripcion' => $this->faker->sentence,
         ];
     }

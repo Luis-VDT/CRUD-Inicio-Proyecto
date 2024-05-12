@@ -20,34 +20,23 @@
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav mr-auto">
                 <!-- Menú de Empleados -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
+                <li class="nav-item">
+                    <a class="nav-link" href="/empleados"  role="button">
                     Empleados
-                    </a>
-                    <div class="dropdown-menu">
-                    <a class="dropdown-item" href="/empleados/create">Crear</a>
-                    <a class="dropdown-item" href="/empleados">Ver</a>
-                    </div>
+                    </a>                    
                 </li>
                 <!-- Menú de Proyectos -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
-                    Proyectos
-                    </a>
-                    <div class="dropdown-menu">
-                    <a class="dropdown-item" href="/proyectos/create">Crear</a>
-                    <a class="dropdown-item" href="/proyectos">Ver</a>
-                    </div>
+                <li class="nav-item">
+                    <a class="nav-link" href="/proyectos"  role="button">
+                        Proyectos
+                    </a>                    
+                                   
                 </li>
                 <!-- Menú de Herramientas -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
+                <li class="nav-item">
+                    <a class="nav-link" href="/herramientas"  role="button" >
                     Herramientas
-                    </a>
-                    <div class="dropdown-menu">
-                    <a class="dropdown-item" href="/herramientas/create">Crear</a>
-                    <a class="dropdown-item" href="/herramientas">Ver</a>
-                    </div>
+                    </a>                    
                 </li>
                 </ul>
             </div>            
@@ -73,7 +62,7 @@
                     </div>
                 </li>
             </ul>
-        </nav>        
+        </nav>      
         <div class="container mt-4">
             <div class="card">
                 <div class="card-body">

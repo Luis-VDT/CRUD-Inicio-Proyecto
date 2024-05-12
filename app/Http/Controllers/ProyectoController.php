@@ -7,6 +7,8 @@ use App\Models\Proyecto;
 use App\Models\Empleados;
 use App\Models\Herramienta;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\DB;
+
 
 class ProyectoController extends Controller
 {
@@ -24,8 +26,8 @@ class ProyectoController extends Controller
      */
     public function create()
     {
-        $empleados = Empleados::all();
-        $herramientas = Herramienta::all();
+        $empleados = Empleados::whereNull('proyecto_id')->get();        
+        $herramientas = Herramienta::where('cantidadDisponible', '>', 0)->get();
         return view('proyectos.create', compact('empleados', 'herramientas'));
     }
 
@@ -42,26 +44,47 @@ class ProyectoController extends Controller
             'herramientas' => 'required|array|exists:herramientas,id',
         ]);
 
-        // Creación del proyecto
-        $proyecto = new Proyecto;
-        $proyecto->nombre = $request->nombre;
-        $proyecto->descripcion = $request->descripcion;
-        $proyecto->save();
+        // crear proyecto a base de datos
+        DB::beginTransaction();
 
-        // Asignación de empleados al proyecto
-        foreach ($request->empleados as $empleado_id) {
-            $empleado = Empleados::find($empleado_id);
-            $empleado->proyecto_id = $proyecto->id;
-            $empleado->save();
+        try {            
+            $proyecto = new Proyecto;
+            $proyecto->nombre = $request->nombre;
+            $proyecto->descripcion = $request->descripcion;
+            $proyecto->save();
+
+            // asignación de empleados al proyecto
+            foreach ($request->empleados as $empleado_id) {
+                $empleado = Empleados::find($empleado_id);
+                if($empleado->proyecto_id){
+                    return redirect()->back()->with('error', 'El empleado ' . $empleado->nombre . ' ya está asignado a otro proyecto.');
+                }
+                $empleado->proyecto_id = $proyecto->id;
+                $empleado->save();
+            }
+
+            // asignación de herramientas al proyecto
+            foreach ($request->herramientas as $herramienta_id) {
+                $herramienta = Herramienta::find($herramienta_id);
+                if ($herramienta->cantidadDisponible <= 0) {                
+                    return redirect()->back()->with('error', 'La herramienta ' . $herramienta->nombre . ' no tiene cantidad disponible.');
+                }
+                $proyecto->herramientas()->attach($herramienta_id);
+                $herramienta->cantidadDisponible--;
+                $herramienta->save();
+            }
+
+            // si tno hay errores se confirma la creacion del proyecto
+            DB::commit();
+
+            return redirect()->route('proyectos.index');
+        } catch (\Exception $e) {
+            // si hay erroes se revierte la creacion
+            DB::rollback();
+            return redirect()->back()->with('error', 'Ocurrió un error al crear el proyecto. Por favor, inténtalo de nuevo.');
         }
-
-        // Asignación de herramientas al proyecto
-        foreach ($request->herramientas as $herramienta_id) {
-            $proyecto->herramientas()->attach($herramienta_id);
-        }
-
-        return redirect()->route('proyectos.index');
     }
+
 
 
     /**
@@ -76,9 +99,9 @@ class ProyectoController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(Proyecto $proyecto)
-    {
-        $empleados = Empleados::all();
-        $herramientas = Herramienta::all();        
+    {        
+        $empleados = Empleados::whereNull('proyecto_id')->get();        
+        $herramientas = Herramienta::where('cantidadDisponible', '>', 0)->get();
         return view('proyectos.edit', compact('proyecto','empleados', 'herramientas'));
     }
 
@@ -86,48 +109,69 @@ class ProyectoController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, Proyecto $proyecto)
-    {
+    {        
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'descripcion' => 'required|string|max:255',
+            'empleados' => 'required|array|exists:empleados,id',
+            'herramientas' => 'required|array|exists:herramientas,id',
+        ]);
+        DB::beginTransaction();
         try {
-            $request->validate([
-                'nombre' => 'required|string|max:255',
-                'descripcion' => 'required|string|max:255',
-                'empleados' => 'required|array|exists:empleados,id',
-                'herramientas' => 'required|array|exists:herramientas,id',
-            ]);
-        } catch (ValidationException $e) {
-            return redirect()->back()->withErrors($e->errors())->withInput();            
+            // desasigna todos los empleados y herramientas actuales
+            foreach ($proyecto->herramientas as $herramienta) {
+                $herramienta->cantidadDisponible += $herramienta->pivot->cantidad_asignada;
+                $herramienta->save();
+            }
+            $proyecto->empleados()->update(['proyecto_id' => null]);
+            $proyecto->herramientas()->detach();
+
+            // actualiza los campos individuales
+            $proyecto->nombre = $request->nombre;
+            $proyecto->descripcion = $request->descripcion;
+            $proyecto->save();
+
+            // asigna los nuevos empleados y herramientas
+            foreach ($request->empleados as $empleado_id) {
+                $empleado = Empleados::find($empleado_id);
+                if($empleado->proyecto_id){
+                    return redirect()->back()->with('error', 'El empleado ' . $empleado->nombre . ' ya está asignado a otro proyecto.');
+                }
+                $empleado->proyecto_id = $proyecto->id;
+                $empleado->save();
+            }
+
+            foreach ($request->herramientas as $herramienta_id) {
+                $herramienta = Herramienta::find($herramienta_id);
+                if ($herramienta->cantidadDisponible <= 0) {                
+                    return redirect()->back()->with('error', 'La herramienta ' . $herramienta->nombre . ' no tiene cantidad disponible.');
+                }
+                $proyecto->herramientas()->attach($herramienta_id);
+                $herramienta->cantidadDisponible--;
+                $herramienta->save();
+            }            
+            DB::commit();
+            return redirect()->route('proyectos.index');
+        } catch (\Exception $e) {            
+            DB::rollback();
+            return redirect()->back()->with('error', 'Ocurrió un error al actualizar el proyecto. Por favor, inténtalo de nuevo.');
         }
-
-        // Actualizar los campos individuales
-        $proyecto->nombre = $request->nombre;
-        $proyecto->descripcion = $request->descripcion;
-        $proyecto->save();
-
-        // Desasignar todos los empleados y herramientas actuales
-        $proyecto->empleados()->update(['proyecto_id' => null]);
-        $proyecto->herramientas()->detach();
-
-        // Asignar los nuevos empleados y herramientas
-        foreach ($request->empleados as $empleado_id) {
-            $empleado = Empleados::find($empleado_id);
-            $empleado->proyecto_id = $proyecto->id;
-            $empleado->save();
-        }
-
-        foreach ($request->herramientas as $herramienta_id) {
-            $proyecto->herramientas()->attach($herramienta_id);
-        }
-
-        return redirect()->route('proyectos.index');
     }
+
 
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Proyecto $proyecto)
-    {
+    {        
+        foreach ($proyecto->herramientas as $herramienta) {
+            $herramienta->cantidadDisponible += $herramienta->pivot->cantidad_asignada;
+            $herramienta->save();
+        }        
+        $proyecto->empleados()->update(['proyecto_id' => null]);
         $proyecto->delete();
         return redirect()->route('proyectos.index');
     }
+
 }

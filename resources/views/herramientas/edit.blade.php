@@ -1,3 +1,5 @@
+<!-- resources/views/empleados/edit.blade.php -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Crear nuevo proyecto</title>
+    <title>Editar herramienta</title>
     <!-- Custom fonts for this template -->
     <link href="{{ asset('resources/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -14,20 +16,7 @@
     <link href="{{ asset('resources/css/sb-admin-2.min.css') }}" rel="stylesheet">
 </head>
 <body class="bg-gradient-primary">
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-    @if (session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
-    @endif
+    
     <div class="container">
         <div class="card o-hidden border-0 shadow-lg my-5">
             <div class="card-body p-0">
@@ -37,37 +26,25 @@
                     <div class="col-lg-7">
                         <div class="p-5">
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Crear nuevo proyecto</h1>
+                                <h1 class="h4 text-gray-900 mb-4">Editar Herramienta</h1>
                             </div>
-                            <form method="POST" action="{{ route('proyectos.store') }}">
+                            <form method="POST" action="{{ route('herramientas.update', $herramienta->id) }}">
                                 @csrf
+                                @method('PUT')
                                 <div class="form-group">
                                     <label for="nombre">Nombre</label>
-                                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" value="{{ $herramienta->nombre }}" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="descripcion">Descripción</label>
-                                    <textarea class="form-control" id="descripcion" name="descripcion"></textarea>
+                                    <textarea class="form-control" id="descripcion" name="descripcion">{{ $herramienta->descripcion }}</textarea>
                                 </div>
+
                                 <div class="form-group">
-                                    <label for="empleados">Empleados</label>
-                                    <select multiple class="form-control" id="empleados" name="empleados[]">
-                                        @foreach ($empleados as $empleado)
-                                            <option value="{{ $empleado->id }}">{{ $empleado->nombre }}</option>
-                                        @endforeach
-                                    </select>
-                                    <small id="empleadosHelp" class="form-text text-muted">Para seleccionar varios empleados, mantén presionada la tecla Ctrl o Shift mientras haces clic.</small>
+                                    <label for="herramientas">Cantidad Disponible</label>                                    
+                                    <input type="number" class="form-control" id="cantidadDisponible" name="cantidadDisponible" value="{{ $herramienta->cantidadDisponible }}" required>                                    
                                 </div>
-                                <div class="form-group">
-                                    <label for="herramientas">Herramientas</label>
-                                    <select multiple class="form-control" id="herramientas" name="herramientas[]">
-                                        @foreach ($herramientas as $herramienta)
-                                            <option value="{{ $herramienta->id }}">{{ $herramienta->nombre }}</option>
-                                        @endforeach
-                                    </select>
-                                    <small id="empleadosHelp" class="form-text text-muted">Para seleccionar varias herramientas, mantén presionada la tecla Ctrl o Shift mientras haces clic.</small>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Crear Proyecto</button>
+                                <button type="submit" class="btn btn-primary">Actualizar Herramienta</button>
                             </form>
                             <hr>                            
                         </div>
