@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Empleados</title>
+    <title>Proyectos</title>
     <link href="{{asset('resources/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -74,32 +74,33 @@
                 </li>
             </ul>
         </nav>        
+        
         <div class="container mt-4">
             <div class="card">
                 <div class="card-body">
-                    <h1 class="card-title">Empleados</h1>
+                    <h1 class="card-title">Proyectos</h1>
                     <table class="table">
                         <tr>
                             <th>Nombre</th>
-                            <th>Apellido Paterno</th>
-                            <th>Apellido Materno</th>
-                            <th>Departamento</th>
-                            <th>Puesto</th>
-                            <th>Fecha de Nacimiento</th>
+                            <th>Descripción</th>
+                            <th>Empleados Asignados</th>
                             <th>Acciones</th>
                         </tr>
-                        @foreach ($empleados as $empleado)
+                        @foreach ($proyectos as $proyecto)
                             <tr>
-                                <td>{{ $empleado->nombre }}</td>
-                                <td>{{ $empleado->apellidoP }}</td>
-                                <td>{{ $empleado->apellidoM }}</td>
-                                <td>{{ $empleado->departamento }}</td>
-                                <td>{{ $empleado->puesto }}</td>
-                                <td>{{ $empleado->fecha_nacimiento }}</td>
+                                <td>{{ $proyecto->nombre }}</td>
+                                <td>{{ $proyecto->descripcion }}</td>
                                 <td>
-                                    <a href="{{ route('empleados.show', $empleado) }}">Ver detalles</a>
-                                    <a href="{{ route('empleados.edit', $empleado) }}">Editar</a>
-                                    <form method="POST" action="{{ route('empleados.destroy', $empleado) }}">
+                                    <ul>
+                                        @foreach ($proyecto->empleados as $empleado)
+                                            <li>{{ $empleado->nombre }}</li>
+                                        @endforeach
+                                    </ul>
+                                </td>
+                                <td>
+                                    <a href="{{ route('proyectos.show', $proyecto) }}">Ver detalles</a>
+                                    <a href="{{ route('proyectos.edit', $proyecto) }}">Editar</a>
+                                    <form method="POST" action="{{ route('proyectos.destroy', $proyecto) }}">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit">Eliminar</button>
@@ -108,10 +109,11 @@
                             </tr>
                         @endforeach
                     </table>
-                    <a href="{{ route('empleados.create') }}">Crear nuevo empleado</a>
+                    <a href="{{ route('proyectos.create') }}">Crear nuevo proyecto</a>
                 </div>
             </div>
         </div>
+
     </div>
 
     <!-- Bootstrap core JavaScript-->

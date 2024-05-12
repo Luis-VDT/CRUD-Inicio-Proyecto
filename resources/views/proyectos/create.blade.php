@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Crear nuevo empleado</title>
+    <title>Crear nuevo proyecto</title>
     <!-- Custom fonts for this template -->
     <link href="{{ asset('resources/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -28,38 +28,41 @@
             <div class="card-body p-0">
                 <!-- Nested Row within Card Body -->
                 <div class="row">
-                    <div id="image-preview" class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
                     <div class="col-lg-7">
                         <div class="p-5">
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Crear nuevo empleado</h1>
+                                <h1 class="h4 text-gray-900 mb-4">Crear nuevo proyecto</h1>
                             </div>
-                            <form method="POST" action="{{ route('empleados.store') }}" enctype="multipart/form-data" class="user">
+                            <form method="POST" action="{{ route('proyectos.store') }}">
                                 @csrf
                                 <div class="form-group">
-                                    <input type="text" class="form-control form-control-user" id="nombre" name="nombre" placeholder="Nombre">
+                                    <label for="nombre">Nombre</label>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" required>
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control form-control-user" id="apellidoP" name="apellidoP" placeholder="Apellido Paterno">
+                                    <label for="descripcion">Descripción</label>
+                                    <textarea class="form-control" id="descripcion" name="descripcion"></textarea>
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control form-control-user" id="apellidoM" name="apellidoM" placeholder="Apellido Materno">
+                                    <label for="empleados">Empleados</label>
+                                    <select multiple class="form-control" id="empleados" name="empleados[]">
+                                        @foreach ($empleados as $empleado)
+                                            <option value="{{ $empleado->id }}">{{ $empleado->nombre }}</option>
+                                        @endforeach
+                                    </select>
+                                    <small id="empleadosHelp" class="form-text text-muted">Para seleccionar varios empleados, mantén presionada la tecla Ctrl o Shift mientras haces clic.</small>
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control form-control-user" id="departamento" name="departamento" placeholder="Departamento">
+                                    <label for="herramientas">Herramientas</label>
+                                    <select multiple class="form-control" id="herramientas" name="herramientas[]">
+                                        @foreach ($herramientas as $herramienta)
+                                            <option value="{{ $herramienta->id }}">{{ $herramienta->nombre }}</option>
+                                        @endforeach
+                                    </select>
+                                    <small id="empleadosHelp" class="form-text text-muted">Para seleccionar varias herramientas, mantén presionada la tecla Ctrl o Shift mientras haces clic.</small>
                                 </div>
-                                <div class="form-group">
-                                    <input type="text" class="form-control form-control-user" id="puesto" name="puesto" placeholder="Puesto">
-                                </div>
-                                <div class="form-group">
-                                    <input type="date" class="form-control form-control-user" id="fecha_nacimiento" name="fecha_nacimiento" placeholder="Fecha de Nacimiento">
-                                </div>
-
-                                <div class="form-group">
-                                    <input type="file" class="form-control-file" id="foto_perfil" accept="image/*" name="foto_perfil">
-                                </div>
-                                
-                                <button type="submit" class="btn btn-primary btn-user btn-block">Crear</button>
+                                <button type="submit" class="btn btn-primary">Crear Proyecto</button>
                             </form>
                             <hr>                            
                         </div>
@@ -75,14 +78,5 @@
     <script src="{{ asset('resources/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
     <!-- Custom scripts for all pages-->
     <script src="{{ asset('resources/js/sb-admin-2.min.js') }}"></script>
-    <script>
-        document.getElementById('foto_perfil').addEventListener('change', function(e) {
-            var reader = new FileReader();
-            reader.onload = function(event) {
-                document.getElementById('image-preview').style.backgroundImage = 'url(' + event.target.result + ')';
-            };
-            reader.readAsDataURL(e.target.files[0]);
-        });
-    </script>    
 </body>
 </html>

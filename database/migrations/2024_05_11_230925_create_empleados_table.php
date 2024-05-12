@@ -19,14 +19,14 @@ return new class extends Migration
             $table->string('puesto');
             $table->string('departamento');
             $table->date('fecha_nacimiento');
+            $table->string('foto_perfil')->nullable(); // Campo para almacenar la imagen como datos binarios
             
-            //clave foranea para la relacion con proyectos
+            // Clave foranea para la relacion con proyectos
             $table->unsignedBigInteger('proyecto_id')->nullable();
             $table->foreign('proyecto_id')->references('id')->on('proyectos')->onDelete('set null');
         
             $table->timestamps();
         });
-        
     }
 
     /**

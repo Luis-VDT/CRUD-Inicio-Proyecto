@@ -29,8 +29,12 @@
         <div class="card o-hidden border-0 shadow-lg my-5">
             <div class="card-body p-0">
                 <!-- Nested Row within Card Body -->
-                <div class="row">
-                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                <div class="row">                    
+                    @if ($empleado->foto_perfil)
+                        <div id="image-preview" class="col-lg-5 d-none d-lg-block bg-register-image" style="background-image: url('{{ asset('storage/' . $empleado->foto_perfil) }}');"></div>
+                    @else
+                    <div id="image-preview" class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                    @endif                    
                     <div class="col-lg-7">
                         <div class="p-5">
                             <div class="text-center">
@@ -57,6 +61,16 @@
                                 <div class="form-group">
                                     <input type="date" class="form-control form-control-user" id="fecha_nacimiento" name="fecha_nacimiento" value="{{ $empleado->fecha_nacimiento }}" placeholder="Fecha de Nacimiento">
                                 </div>
+
+                                <div class="form-group">
+                                    <input type="file" class="form-control-file" id="foto_perfil" accept="image/*" name="foto_perfil">
+                                </div>
+
+                                <div class="form-group">
+                                    <a href="{{ asset('storage/' . $empleado->foto_perfil) }}" download class="btn btn-primary">
+                                        Descargar foto de perfil actual
+                                    </a>
+                                </div>
                                 <button type="submit" class="btn btn-primary btn-user btn-block">Actualizar</button>
                             </form>
                             <hr>                            
@@ -73,5 +87,14 @@
     <script src="{{ asset('resources/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
     <!-- Custom scripts for all pages-->
     <script src="{{ asset('resources/js/sb-admin-2.min.js') }}"></script>
+    <script>
+        document.getElementById('foto_perfil').addEventListener('change', function(e) {
+            var reader = new FileReader();
+            reader.onload = function(event) {
+                document.getElementById('image-preview').style.backgroundImage = 'url(' + event.target.result + ')';
+            };
+            reader.readAsDataURL(e.target.files[0]);
+        });
+    </script>    
 </body>
 </html>
