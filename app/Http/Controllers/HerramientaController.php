@@ -8,6 +8,13 @@ use Illuminate\Validation\ValidationException;
 
 class HerramientaController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('admin')->only(['edit', 'update', 'destroy', 'create', 'store']);
+    }
+    
     public function index()
     {
         $herramientas = Herramienta::all();

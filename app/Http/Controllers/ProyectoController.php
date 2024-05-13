@@ -15,6 +15,12 @@ use App\Mail\ProyectotAsignado;
 
 class ProyectoController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('admin')->only(['edit', 'update', 'destroy', 'create', 'store']);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -145,6 +151,7 @@ class ProyectoController extends Controller
                 }
                 $empleado->proyecto_id = $proyecto->id;
                 $empleado->save();
+                Mail::to($empleado->email)->send(new ProyectotAsignado($proyecto, $empleado));
             }
 
             foreach ($request->herramientas as $herramienta_id) {

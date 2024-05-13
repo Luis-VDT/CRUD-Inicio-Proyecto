@@ -82,17 +82,21 @@
                                 <td>{{ $herramienta->descripcion }}</td>                                
                                 <td>
                                     <a href="{{ route('herramientas.show', $herramienta) }}">Ver detalles</a>
-                                    <a href="{{ route('herramientas.edit', $herramienta) }}">Editar</a>
-                                    <form method="POST" action="{{ route('herramientas.destroy', $herramienta) }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit">Eliminar</button>
-                                    </form>
+                                    @if(Gate::allows('edit-tables'))
+                                        <a href="{{ route('herramientas.edit', $herramienta) }}">Editar</a>
+                                        <form method="POST" action="{{ route('herramientas.destroy', $herramienta) }}">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit">Eliminar</button>
+                                        </form>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
                     </table>
-                    <a href="{{ route('herramientas.create') }}">Crear nueva herramienta</a>
+                    @if(Gate::allows('edit-tables'))
+                        <a href="{{ route('herramientas.create') }}">Crear nueva herramienta</a>
+                    @endif
                 </div>
             </div>
         </div>

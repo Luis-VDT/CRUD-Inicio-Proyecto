@@ -88,17 +88,21 @@
                                 </td>
                                 <td>
                                     <a href="{{ route('proyectos.show', $proyecto) }}">Ver detalles</a>
-                                    <a href="{{ route('proyectos.edit', $proyecto) }}">Editar</a>
-                                    <form method="POST" action="{{ route('proyectos.destroy', $proyecto) }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit">Eliminar</button>
-                                    </form>
+                                    @if(Gate::allows('edit-tables'))
+                                        <a href="{{ route('proyectos.edit', $proyecto) }}">Editar</a>
+                                        <form method="POST" action="{{ route('proyectos.destroy', $proyecto) }}">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit">Eliminar</button>
+                                        </form>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
                     </table>
-                    <a href="{{ route('proyectos.create') }}">Crear nuevo proyecto</a>
+                    @if(Gate::allows('edit-tables'))
+                        <a href="{{ route('proyectos.create') }}">Crear nuevo proyecto</a>
+                    @endif
                 </div>
             </div>
         </div>

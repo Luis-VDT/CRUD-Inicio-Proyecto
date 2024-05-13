@@ -52,18 +52,18 @@
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Bienvenido</h1>
                                     </div>
                                     <form class="user" method="POST" action="{{ url('login') }}">
                                         @csrf
                                         <div class="form-group">
                                             <input type="email" class="form-control form-control-user" name="email"
                                                 id="exampleInputEmail" aria-describedby="emailHelp"
-                                                placeholder="Enter Email Address...">
+                                                placeholder="Ingresa tu correo">
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user" name="password"
-                                                id="exampleInputPassword" placeholder="Password">
+                                                id="exampleInputPassword" placeholder="Ingresa tu contraseña">
                                         </div>                                        
                                         <button type="submit" class="btn btn-primary btn-user btn-block">
                                             Login

@@ -13,7 +13,58 @@
     <!-- Custom styles for this template -->
     <link href="{{ asset('resources/css/sb-admin-2.min.css') }}" rel="stylesheet">
 </head>
-<body class="bg-gradient-primary">
+<body class="bg-gradient-light">
+    <nav class="navbar navbar-expand navbar-light bg-gradient-primary topbar mb-4 static-top shadow">
+        <a class="navbar-brand" href="#">ProjectManager</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+            <!-- Menú de Empleados -->
+            <li class="nav-item">
+                <a class="nav-link" href="/empleados"  role="button">
+                Empleados
+                </a>                    
+            </li>
+            <!-- Menú de Proyectos -->
+            <li class="nav-item">
+                <a class="nav-link" href="/proyectos"  role="button">
+                    Proyectos
+                </a>                    
+                               
+            </li>
+            <!-- Menú de Herramientas -->
+            <li class="nav-item">
+                <a class="nav-link" href="/herramientas"  role="button" >
+                Herramientas
+                </a>                    
+            </li>
+            </ul>
+        </div>            
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown no-arrow">
+                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="mr-2 d-none d-lg-inline ">{{ Auth::user()->nombre }}</span>
+                    <img class="img-profile rounded-circle"
+                        src="{{asset('resources/img/undraw_profile.svg')}}">
+                </a>
+                <!-- Dropdown - User Information -->
+                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                    aria-labelledby="userDropdown">                        
+                    <form action="/logout" method="POST">
+                        @csrf
+                        <a class="dropdown-item" href="{{ route('perfil.edit', Auth::user()) }}">                        
+                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Mi Perfil                            
+                        </a>
+                        <a class="dropdown-item" href="#" onclick="this.closest('form').submit()" data-toggle="modal" data-target="#logoutModal">                        
+                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Salir                            
+                        </a>
+                    </form>                        
+                </div>
+            </li>
+        </ul>
+    </nav>      
     <div class="container">
         <div class="card o-hidden border-0 shadow-lg my-5">
             <div class="card-body p-0">

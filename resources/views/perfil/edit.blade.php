@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Editar empleado</title>
+    <title>Editar perfil</title>
     <!-- Custom fonts for this template -->
     <link href="{{ asset('resources/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -82,41 +82,42 @@
             <div class="card-body p-0">
                 <!-- Nested Row within Card Body -->
                 <div class="row">                    
-                    @if ($empleado->foto_perfil)
-                        <div id="image-preview" class="col-lg-5 d-none d-lg-block bg-register-image" style="background-image: url('{{ asset('storage/' . $empleado->foto_perfil) }}');"></div>
+                    @if ($user->foto_perfil)
+                        <div id="image-preview" class="col-lg-5 d-none d-lg-block bg-register-image" style="background-image: url('{{ asset('storage/' . $user->foto_perfil) }}');"></div>
                     @else
                     <div id="image-preview" class="col-lg-5 d-none d-lg-block bg-register-image"></div>
                     @endif                    
                     <div class="col-lg-7">
                         <div class="p-5">
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Editar empleado</h1>
+                                <h1 class="h4 text-gray-900 mb-4">Editar perfil</h1>
                             </div>
-                            <form method="POST" action="{{ route('empleados.update', $empleado) }}" class="user">
+                            <form method="POST" action="{{ route('perfil.update', $user) }}" class="user">
                                 @csrf
                                 @method('PUT')
                                 <div class="form-group">
-                                    <input type="text" class="form-control form-control-user" id="nombre" name="nombre" value="{{ $empleado->nombre }}" placeholder="Nombre">
+                                    <input type="text" class="form-control form-control-user" id="nombre" name="nombre" value="{{ $user->nombre }}" placeholder="Nombre">
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control form-control-user" id="apellidoP" name="apellidoP" value="{{ $empleado->apellidoP }}" placeholder="Apellido Paterno">
+                                    <input type="text" class="form-control form-control-user" id="apellidoP" name="apellidoP" value="{{ $user->apellidoP }}" placeholder="Apellido Paterno">
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control form-control-user" id="apellidoM" name="apellidoM" value="{{ $empleado->apellidoM }}" placeholder="Apellido Materno">
+                                    <input type="text" class="form-control form-control-user" id="apellidoM" name="apellidoM" value="{{ $user->apellidoM }}" placeholder="Apellido Materno">
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control form-control-user" id="departamento" name="departamento" value="{{ $empleado->departamento }}" placeholder="Departamento">
+                                    <input type="text" class="form-control form-control-user" id="departamento" name="departamento" value="{{ $user->departamento }}" placeholder="Departamento">
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control form-control-user" id="puesto" name="puesto" value="{{ $empleado->puesto }}" placeholder="Puesto">
+                                    <input type="text" class="form-control form-control-user" id="puesto" name="puesto" value="{{ $user->puesto }}" placeholder="Puesto">
                                 </div>
                                 <div class="form-group">
-                                    <input type="date" class="form-control form-control-user" id="fecha_nacimiento" name="fecha_nacimiento" value="{{ $empleado->fecha_nacimiento }}" placeholder="Fecha de Nacimiento">
+                                    <input type="date" class="form-control form-control-user" id="fecha_nacimiento" name="fecha_nacimiento" value="{{ $user->fecha_nacimiento }}" placeholder="Fecha de Nacimiento">
                                 </div>
 
                                 <div class="form-group">
-                                    <input type="email" class="form-control form-control-user" value="{{$empleado->email}}" id="email" name="email" placeholder="Email" required>
+                                    <input type="email" class="form-control form-control-user" value="{{$user->email}}" id="email" name="email" placeholder="Email" required>
                                 </div>
+
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="password" class="form-control form-control-user"   id="password" name="password" placeholder="Contraseña" required>
@@ -124,30 +125,14 @@
                                     <div class="col-sm-6">
                                         <input type="password" class="form-control form-control-user" id="password_confirmation" name="password_confirmation" placeholder="Confirmar Contraseña" required>
                                     </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label>Privilegios de administrador:</label><br>
-                                    <div class="form-check">                                        
-                                        <input class="form-check-input" type="radio" name="privilegios_admin" id="privilegios_admin1" value="0">                                        
-                                        <label class="form-check-label" for="privilegios_admin1">
-                                            No
-                                        </label>
-                                    </div>
-                                    <div class="form-check">                                        
-                                        <input class="form-check-input" type="radio" name="privilegios_admin" id="privilegios_admin2" value="1" >                                        
-                                        <label class="form-check-label" for="privilegios_admin2">
-                                            Sí
-                                        </label>
-                                    </div>
-                                </div>                                
+                                </div>                                                     
                                 
                                 <button type="submit" class="btn btn-primary btn-user btn-block">Actualizar</button>
                             </form>
                             <br>
                             <br>
                             <div class="form-group">
-                                <a href="{{ asset('storage/' . $empleado->foto_perfil) }}" download class="btn btn-primary">
+                                <a href="{{ asset('storage/' . $user->foto_perfil) }}" download class="btn btn-primary">
                                     Descargar foto de perfil actual
                                 </a>
                             </div>

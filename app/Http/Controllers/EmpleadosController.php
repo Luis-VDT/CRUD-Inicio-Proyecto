@@ -6,13 +6,21 @@ use App\Models\Empleados;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Auth;
+
 
 
 class EmpleadosController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('admin')->only(['edit', 'update', 'destroy', 'create', 'store']);
+    }
+
     public function index()
     {
-        $empleados = Empleados::all();
+        $empleados = Empleados::where('id', '!=', Auth::id())->get();        
         return view('empleados.index', compact('empleados'));
     }
 
