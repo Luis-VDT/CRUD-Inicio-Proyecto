@@ -63,16 +63,42 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <input type="file" class="form-control-file" id="foto_perfil" accept="image/*" name="foto_perfil">
+                                    <input type="email" class="form-control form-control-user" value="{{$empleado->email}}" id="email" name="email" placeholder="Email" required>
                                 </div>
-
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="password" class="form-control form-control-user"   id="password" name="password" placeholder="Contraseña" required>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="password" class="form-control form-control-user" id="password_confirmation" name="password_confirmation" placeholder="Confirmar Contraseña" required>
+                                    </div>
+                                </div>
+                                
                                 <div class="form-group">
-                                    <a href="{{ asset('storage/' . $empleado->foto_perfil) }}" download class="btn btn-primary">
-                                        Descargar foto de perfil actual
-                                    </a>
-                                </div>
+                                    <label>Privilegios de administrador:</label><br>
+                                    <div class="form-check">                                        
+                                        <input class="form-check-input" type="radio" name="privilegios_admin" id="privilegios_admin1" value="0">                                        
+                                        <label class="form-check-label" for="privilegios_admin1">
+                                            No
+                                        </label>
+                                    </div>
+                                    <div class="form-check">                                        
+                                        <input class="form-check-input" type="radio" name="privilegios_admin" id="privilegios_admin2" value="1" checked>                                        
+                                        <label class="form-check-label" for="privilegios_admin2">
+                                            Sí
+                                        </label>
+                                    </div>
+                                </div>                                
+                                
                                 <button type="submit" class="btn btn-primary btn-user btn-block">Actualizar</button>
                             </form>
+                            <br>
+                            <br>
+                            <div class="form-group">
+                                <a href="{{ asset('storage/' . $empleado->foto_perfil) }}" download class="btn btn-primary">
+                                    Descargar foto de perfil actual
+                                </a>
+                            </div>
                             <hr>                            
                         </div>
                     </div>

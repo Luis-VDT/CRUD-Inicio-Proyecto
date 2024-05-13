@@ -48,6 +48,16 @@
                                 <div class="form-group">
                                     <p class="form-control form-control-user">Fecha de Nacimiento: {{ $empleado->fecha_nacimiento }}</p>
                                 </div>
+                                <div class="form-group">
+                                    <p class="form-control form-control-user">Correo: {{ $empleado->email }}</p>
+                                </div>
+                                <div class="form-group">
+                                    @if($empleado->privilegios_admin == 1)
+                                        <p class="form-control form-control-user">Tiene privilegios de administrador: SI</p>                                    
+                                    @else
+                                        <p class="form-control form-control-user">Tiene privilegios de administrador: NO</p>
+                                    @endif
+                                </div>
                                 
                                 <div class="form-group">
                                     <a href="{{ asset('storage/' . $empleado->foto_perfil) }}" download class="btn btn-primary">

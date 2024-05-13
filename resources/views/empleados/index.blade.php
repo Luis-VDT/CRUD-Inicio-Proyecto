@@ -73,8 +73,7 @@
                             <th>Apellido Paterno</th>
                             <th>Apellido Materno</th>
                             <th>Departamento</th>
-                            <th>Puesto</th>
-                            <th>Fecha de Nacimiento</th>
+                            <th>Puesto</th>                            
                             <th>Acciones</th>
                         </tr>
                         @foreach ($empleados as $empleado)
@@ -83,8 +82,7 @@
                                 <td>{{ $empleado->apellidoP }}</td>
                                 <td>{{ $empleado->apellidoM }}</td>
                                 <td>{{ $empleado->departamento }}</td>
-                                <td>{{ $empleado->puesto }}</td>
-                                <td>{{ $empleado->fecha_nacimiento }}</td>
+                                <td>{{ $empleado->puesto }}</td>                                
                                 <td>
                                     <a href="{{ route('empleados.show', $empleado) }}">Ver detalles</a>
                                     <a href="{{ route('empleados.edit', $empleado) }}">Editar</a>

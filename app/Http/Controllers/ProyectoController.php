@@ -8,6 +8,9 @@ use App\Models\Empleados;
 use App\Models\Herramienta;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ProyectotAsignado;
+
 
 
 class ProyectoController extends Controller
@@ -61,6 +64,9 @@ class ProyectoController extends Controller
                 }
                 $empleado->proyecto_id = $proyecto->id;
                 $empleado->save();
+
+                // Enviar correo electrónico al empleado
+                Mail::to($empleado->email)->send(new ProyectotAsignado($proyecto, $empleado));
             }
 
             // asignación de herramientas al proyecto
@@ -81,7 +87,7 @@ class ProyectoController extends Controller
         } catch (\Exception $e) {
             // si hay erroes se revierte la creacion
             DB::rollback();
-            return redirect()->back()->with('error', 'Ocurrió un error al crear el proyecto. Por favor, inténtalo de nuevo.');
+            return redirect()->back()->with('error', 'Ocurrió un error al crear el proyecto. Por favor, inténtalo de nuevo.' . $e);
         }
     }
 

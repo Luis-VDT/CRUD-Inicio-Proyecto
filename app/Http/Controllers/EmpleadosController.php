@@ -23,6 +23,7 @@ class EmpleadosController extends Controller
 
     public function store(Request $request)
     {        
+        //dd($request->all());        
         try {        
             $request->validate([
                 'nombre' => 'required|string|max:255',
@@ -31,6 +32,9 @@ class EmpleadosController extends Controller
                 'puesto' => 'required|string|max:255',
                 'departamento' => 'required|string|max:255',
                 'fecha_nacimiento' => 'required|date',
+                'email' => 'required|email|unique:empleados|max:255',
+                'password' => 'required|string|confirmed',
+                'privilegios_admin' => 'required|boolean',
                 'foto_perfil' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Max 2MB
             ]);            
             if ($request->hasFile('foto_perfil')) {
@@ -42,6 +46,9 @@ class EmpleadosController extends Controller
                     'puesto' => $request->puesto,
                     'departamento' => $request->departamento,
                     'fecha_nacimiento' => $request->fecha_nacimiento,
+                    'email' => $request->email,
+                    'password' => bcrypt($request->password), 
+                    'privilegios_admin' => $request->privilegios_admin,
                     'foto_perfil' => $rutaImagen,
                 ]);
             } else {                
@@ -56,18 +63,21 @@ class EmpleadosController extends Controller
     
 
 
-    public function show(Empleados $empleado) // Cambia $empleados a $empleado
+    public function show(Empleados $empleado) 
     {
         return view('empleados.show', compact('empleado'));
     }
 
-    public function edit(Empleados $empleado) // Cambia $empleados a $empleado
+    public function edit(Empleados $empleado)
     {
+        //dd($empleado); // Imprime el contenido de $empleado
         return view('empleados.edit', compact('empleado'));
     }
 
     public function update(Request $request, Empleados $empleado)
     {
+        //dd($request->all());
+        //dd($request->file('foto_perfil'));
         try {
             $request->validate([
                 'nombre' => 'required|string|max:255',
@@ -76,13 +86,42 @@ class EmpleadosController extends Controller
                 'puesto' => 'required|string|max:255',
                 'departamento' => 'required|string|max:255',
                 'fecha_nacimiento' => 'required|date',
+                'email' => 'required|email|max:255',
+                'password' => 'required|string|confirmed',
+                'privilegios_admin' => 'required|boolean',
+                'foto_perfil' => 'image|mimes:jpeg,png,jpg,gif|max:2048' , // Max 2MB
             ]);
         } catch (ValidationException $e) {
             return redirect()->back()->withErrors($e->errors())->withInput();            
         }
-        $empleado->update($request->all());
+        
+        $empleado->update($request->except(['password', 'foto_perfil']));
+
+        // Actualizar la contraseña con cifrado
+        if ($request->password) {
+            $empleado->password = bcrypt($request->password);
+        }
+
+        // Actualizar la foto de perfil
+        if ($request->hasFile('foto_perfil')) {
+            // Eliminar la foto de perfil antigua
+            Storage::disk('public')->delete($empleado->foto_perfil);
+
+            // Almacenar la nueva foto de perfil
+            $rutaImagen = $request->file('foto_perfil')->store('img', 'public');
+            $empleado->foto_perfil = $rutaImagen;
+        } else {
+            // Si no se proporciona una nueva imagen, mantener la antigua
+            $empleado->foto_perfil = $empleado->getOriginal('foto_perfil');
+        }
+
+        // Guardar los cambios en la base de datos
+        $empleado->save();
+
         return redirect()->route('empleados.index');
     }
+
+
 
     public function destroy(Empleados $empleado) // Cambia $empleados a $empleado
     {

@@ -32,7 +32,14 @@ class EmpleadosFactory extends Factory
             'puesto' => $this->faker->jobTitle,
             'departamento' => $this->faker->word,
             'fecha_nacimiento' => $this->faker->date(),
+            'fecha_nacimiento' => $this->faker->date(),
+            'fecha_nacimiento' => $this->faker->date(),
+            'fecha_nacimiento' => $this->faker->date(),
             'proyecto_id' => $this->faker->randomElement($proyectosIds), // Seleccionar aleatoriamente un ID de proyecto existente
+
+            'email' => $this->faker->unique()->safeEmail,
+            'password' => bcrypt('password'), 
+            'privilegios_admin' => false,
         ];
     }
 }
