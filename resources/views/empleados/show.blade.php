@@ -65,6 +65,15 @@
             </li>
         </ul>
     </nav>      
+    @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
     <div class="container">
         <div class="card o-hidden border-0 shadow-lg my-5">
             <div class="card-body p-0">

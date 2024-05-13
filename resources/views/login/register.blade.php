@@ -32,7 +32,7 @@
                     <div class="col-lg-7">
                         <div class="p-5">
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Crear nuevo empleado</h1>
+                                <h1 class="h4 text-gray-900 mb-4">Crear nuevo perfil</h1>
                             </div>
                             <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data" class="user">
                                 @csrf

@@ -65,7 +65,6 @@
             </li>
         </ul>
     </nav>      
-
     @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>

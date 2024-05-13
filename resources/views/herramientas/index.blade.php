@@ -12,9 +12,7 @@
         rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('resources/css/sb-admin-2.min.css') }}">
 </head>
-<body>
-    <div id="content">
-        <!-- Topbar -->
+<body>    
         <nav class="navbar navbar-expand navbar-light bg-gradient-primary topbar mb-4 static-top shadow">
             <a class="navbar-brand" href="#">ProjectManager</a>
             <div class="collapse navbar-collapse">
@@ -44,8 +42,7 @@
                 <li class="nav-item dropdown no-arrow">
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="mr-2 d-none d-lg-inline ">{{ Auth::user()->name }}</span>
-
+                        <span class="mr-2 d-none d-lg-inline ">{{ Auth::user()->nombre }}</span>
                         <img class="img-profile rounded-circle"
                             src="{{asset('resources/img/undraw_profile.svg')}}">
                     </a>
@@ -54,17 +51,29 @@
                         aria-labelledby="userDropdown">                        
                         <form action="/logout" method="POST">
                             @csrf
+                            <a class="dropdown-item" href="{{ route('perfil.edit', Auth::user()) }}">                        
+                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Mi Perfil                            
+                            </a>
                             <a class="dropdown-item" href="#" onclick="this.closest('form').submit()" data-toggle="modal" data-target="#logoutModal">                        
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Logout                            
+                                Salir                            
                             </a>
                         </form>                        
                     </div>
                 </li>
             </ul>
         </nav>      
-        
-        
+        @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+    <div id="content">        
         <div class="container mt-4">
             <div class="card">
                 <div class="card-body">
